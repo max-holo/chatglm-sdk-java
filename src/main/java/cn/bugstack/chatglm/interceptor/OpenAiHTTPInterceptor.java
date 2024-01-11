@@ -2,12 +2,14 @@ package cn.bugstack.chatglm.interceptor;
 
 import cn.bugstack.chatglm.session.Configuration;
 import cn.bugstack.chatglm.utils.BearerTokenUtils;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author 小傅哥，微信：fustack
@@ -15,7 +17,15 @@ import java.io.IOException;
  * @github https://github.com/fuzhengwei
  * @Copyright 公众号：bugstack虫洞栈 | 博客：https://bugstack.cn - 沉淀、分享、成长，让自己和他人都能有所收获！
  */
+@Slf4j
 public class OpenAiHTTPInterceptor implements Interceptor {
+    private int lastIndex = -1;
+
+    public String getNextDifferentElement(List<String> elements) {
+        lastIndex = (lastIndex + 1) % elements.size();
+        log.info("get chatglm apikey:{}",elements.get(lastIndex));
+        return elements.get(lastIndex);
+    }
 
     /**
      * 智普Ai，Jwt加密Token
@@ -28,6 +38,8 @@ public class OpenAiHTTPInterceptor implements Interceptor {
 
     @Override
     public @NotNull Response intercept(Chain chain) throws IOException {
+        String key = getNextDifferentElement(configuration.getKeys());
+        configuration.setApiSecretKey(key);
         // 1. 获取原始 Request
         Request original = chain.request();
         // 2. 构建请求

@@ -8,6 +8,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSources;
 
+import java.util.List;
+
 /**
  * @author 小傅哥，微信：fustack
  * @description 配置文件
@@ -36,6 +38,10 @@ public class Configuration {
         this.apiKey = arrStr[0];
         this.apiSecret = arrStr[1];
     }
+
+    @Getter
+    @Setter
+    private List<String> keys;
 
     @Getter
     private String apiKey;

@@ -104,7 +104,7 @@ public class DefaultOpenAiSession implements OpenAiSession {
         OkHttpClient okHttpClient = configuration.getOkHttpClient();
         Response response = okHttpClient.newCall(request).execute();
         if(!response.isSuccessful()){
-            new RuntimeException("Request failed");
+            new RuntimeException("chatglm Request failed");
         }
         return JSON.parseObject(response.body().string(),ChatCompletionSyncResponse.class);
     }
